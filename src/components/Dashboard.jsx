@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "./themeprovider.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,8 +20,12 @@ import {
 	ShoppingCart,
 	Table2,
 	Trash,
+	Home,
+	ChevronRight,
+	ChevronDown,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,6 +76,25 @@ const formSchema = z.object({
 export function Dashboard() {
 	const { toast } = useToast();
 	const { theme, setTheme } = useTheme();
+	const [toggleLedger, setToggleLedger] = useState(false);
+	const [togglePayables, setTogglePayables] = useState(false);
+	const [toggleReceivables, setToggleReceivables] = useState(false);
+	const [toggleInventory, setToggleInventory] = useState(false);
+	// const [activeLink, setActiveLink] = useState("Dashboard2");
+	// const [contents, setContents] = useState([]);
+
+	// const handleLinkClick = (linkName, linkContents) => {
+	// 	setActiveLink(linkName);
+	// 	setContents(linkContents);
+	// };
+
+	const linkData = {
+		Dashboard: [],
+		Payables: ["Supplier", "Payment", "Invoice"],
+		Receivables: ["Customer", "Invoice", "Receipt"],
+		Ledger: ["Account Chart", "Payment", "Receipt", "Journal", "Contra"],
+		Inventory: ["Item"],
+	};
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -99,6 +122,18 @@ export function Dashboard() {
 			setTheme("dark");
 		}
 	}
+	/*
+		[
+			"Account Chart",
+			"Payment",
+			"Receipt",
+			"Journal",
+			"Contra",
+		]
+		<div className="flex-1">
+						
+		</div>
+	*/
 	return (
 		<div
 			className={`grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]`}
@@ -124,8 +159,8 @@ export function Dashboard() {
 							</span>
 						</Button>
 					</div>
-					<div className="flex-1">
-						<nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+					<ScrollArea className="flex-1">
+					<nav className="grid items-start px-2 text-sm font-medium lg:px-4">
 							<Link
 								to="#"
 								className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
@@ -133,50 +168,64 @@ export function Dashboard() {
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									<LayoutDashboard className="h-5 w-5" />
 								</div>
-								Dashboard2
+								Dashboard
 							</Link>
-							<Link
+							<NavLink
 								to="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								onClick={() => setTogglePayables(!togglePayables)}
 							>
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									<ShoppingCart className="h-5 w-5" />
 								</div>
-								Payables
-								<Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-									6
-								</Badge>
-							</Link>
-							<Link
+								Payables {togglePayables ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+								
+							</NavLink>
+								{
+									togglePayables ? <NavMobActiveContents contents={linkData.Payables} /> : <></>
+								}
+							<NavLink
 								to="#"
-								className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								className="flex items-center relative gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								onClick={() => setToggleReceivables(!toggleReceivables)}
 							>
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									<Package className="h-5 w-5" />
 								</div>
-								Receivables{" "}
-							</Link>
-							<Link
+								Receivables {toggleReceivables ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+							</NavLink>
+								{
+									toggleReceivables ? <NavMobActiveContents contents={linkData.Receivables} /> : <></>
+								}
+							<NavLink
 								to="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								onClick={()=>setToggleLedger(!toggleLedger)}
 							>
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									<Table2 className="h-5 w-5" />
 								</div>
-								Ledger
-							</Link>
-							<NavActiveContents
-								contents={[
-									"Inventory",
-									"Account Chart",
-									"Payment",
-									"Receipt",
-									"Journal",
-									"Contra",
-								]}
-							/>
+									Ledger {toggleLedger ?<ChevronDown className="absolute right-4" />:<ChevronRight className="absolute right-4" />}
+							</NavLink>
+								{
+									toggleLedger ? <NavMobActiveContents contents={linkData.Ledger} /> : <></>
+								}
+							<NavLink
+								to="#"
+								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+								onClick={() => setToggleInventory(!toggleInventory)}
+							>
+								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+									<Home className="h-5 w-5" />
+								</div>
+								Inventory {toggleInventory ?<ChevronDown className="absolute right-4" />:<ChevronRight className="absolute right-4" />}
+							</NavLink>
+								{
+									toggleInventory ? <NavMobActiveContents contents={linkData.Inventory} /> : <></>
+								}
 						</nav>
-					</div>
+					</ScrollArea>
+					
 					<div className="mt-auto p-1">
 						<Card x-chunk="dashboard-02-chunk-0">
 							<CardHeader className="p-1 pt-0 pb-1">
@@ -269,13 +318,14 @@ export function Dashboard() {
 							side="left"
 							className="flex flex-col max-sm:px-3"
 						>
+							<ScrollArea>
 							<nav className="grid gap-2 text-lg font-medium">
 								<Link
 									to="#"
 									className="flex items-center gap-2 text-lg font-semibold"
 								>
 									<Package2 className="h-6 w-6" />
-									<span className="sr-only">Acme Inc</span>
+									<span className="sr-only">TekAnthem</span>
 								</Link>
 								<Link
 									to="#"
@@ -284,49 +334,61 @@ export function Dashboard() {
 									<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 										<LayoutDashboard className="h-5 w-5" />
 									</div>
-									Dashboard2
+									Dashboard
 								</Link>
-								<Link
+								<NavLink
 									to="#"
-									className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 max-md:py-[6px] text-foreground hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									className="mx-[-0.65rem] flex relative items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									onClick={() => setTogglePayables(!togglePayables)}
 								>
 									<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 										<ShoppingCart className="h-5 w-5" />
 									</div>
-									Payables
-									<Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-										6
-									</Badge>
-								</Link>
-								<Link
+									Payables {togglePayables ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+								</NavLink>
+								{
+									togglePayables ? <NavMobActiveContents contents={linkData.Payables} /> : <></>
+								}
+								<NavLink
 									to="#"
-									className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									onClick={() => setToggleReceivables(!toggleReceivables)}
 								>
 									<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 										<Package className="h-5 w-5" />
 									</div>
-									Receivables
-								</Link>
-								<Link
+									Receivables {toggleReceivables ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+								</NavLink>
+								{
+									toggleReceivables ? <NavMobActiveContents contents={linkData.Receivables} /> : <></>
+								}
+								<NavLink
 									to="#"
-									className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									onClick={() => setToggleLedger(!toggleLedger)}
 								>
 									<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 										<Table2 className="h-5 w-5" />
 									</div>
-									Ledger
-								</Link>
-								<NavMobActiveContents
-									contents={[
-										"Inventory",
-										"Account Chart",
-										"Payment",
-										"Receipt",
-										"Journal",
-										"Contra",
-									]}
-								/>
-							</nav>
+									Ledger {toggleLedger ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+								</NavLink>
+								{
+									toggleLedger ? <NavMobActiveContents contents={linkData.Ledger} /> : <></>
+								}
+								<NavLink
+									to="#"
+									className="mx-[-0.65rem] relative flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									onClick={() => setToggleInventory(!toggleInventory)}
+								>
+									<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+										<Home className="h-5 w-5" />
+									</div>
+									Inventory {toggleInventory ? <ChevronDown className="absolute right-4" /> : <ChevronRight className="absolute right-4" />}
+								</NavLink>
+								{
+									toggleInventory ? <NavMobActiveContents contents={linkData.Inventory} /> : <></>
+								}
+							</nav></ScrollArea>
 							{/*  */}
 							<div className="mt-auto">
 								<Card>
