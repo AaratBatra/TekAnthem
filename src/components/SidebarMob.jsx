@@ -67,14 +67,14 @@ const SidebarMob = () => {
 				<ScrollArea>
 					<nav className="grid gap-2 text-lg font-medium">
 						<Link
-							to="#"
+							to="/"
 							className="flex items-center gap-2 text-lg font-semibold"
 						>
 							<Package2 className="h-6 w-6" />
 							<span className="sr-only">TekAnthem</span>
 						</Link>
 						<Link
-							to="#"
+							to="/dashboard"
 							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
@@ -83,7 +83,7 @@ const SidebarMob = () => {
 							Dashboard
 						</Link>
 						<NavLink
-							to="#"
+							to="/payables"
 							className="mx-[-0.65rem] flex relative items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setTogglePayables(!togglePayables)}
 						>
@@ -100,12 +100,13 @@ const SidebarMob = () => {
 						{togglePayables ? (
 							<NavMobActiveContents
 								contents={linkData.Payables}
+								for={"payables"}
 							/>
 						) : (
 							<></>
 						)}
 						<NavLink
-							to="#"
+							to="/receivables"
 							className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() =>
 								setToggleReceivables(!toggleReceivables)
@@ -124,12 +125,13 @@ const SidebarMob = () => {
 						{toggleReceivables ? (
 							<NavMobActiveContents
 								contents={linkData.Receivables}
+								for={"receivables"}
 							/>
 						) : (
 							<></>
 						)}
 						<NavLink
-							to="#"
+							to="/ledger"
 							className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setToggleLedger(!toggleLedger)}
 						>
@@ -144,12 +146,12 @@ const SidebarMob = () => {
 							)}
 						</NavLink>
 						{toggleLedger ? (
-							<NavMobActiveContents contents={linkData.Ledger} />
+							<NavMobActiveContents contents={linkData.Ledger} for={"ledger"} />
 						) : (
 							<></>
 						)}
 						<NavLink
-							to="#"
+							to="/inventory"
 							className="mx-[-0.65rem] relative flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setToggleInventory(!toggleInventory)}
 						>
@@ -166,6 +168,7 @@ const SidebarMob = () => {
 						{toggleInventory ? (
 							<NavMobActiveContents
 								contents={linkData.Inventory}
+								for={"inventory"}
 							/>
 						) : (
 							<></>

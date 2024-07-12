@@ -7,7 +7,13 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus, Trash } from "lucide-react";
+import {
+	ArrowUpDown,
+	ChevronDown,
+	MoreHorizontal,
+	Plus,
+	Trash,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -47,6 +53,38 @@ const initialData = [
 		debit: 5000,
 		reference: "https://example.com/doc2",
 		comments: "Reimbursement",
+	},
+	{
+		id: "3",
+		paidTo: "Jill",
+		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
+		debit: 7000,
+		reference: "https://example.com/doc1",
+		comments: "Car",
+	},
+	{
+		id: "4",
+		paidTo: "Joe Smith",
+		avatar: "/assets/mockPerson.jpeg",
+		debit: 9000,
+		reference: "https://example.com/doc2",
+		comments: "Cycle",
+	},
+	{
+		id: "5",
+		paidTo: "Manjit",
+		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
+		debit: 2000,
+		reference: "https://example.com/doc1",
+		comments: "new",
+	},
+	{
+		id: "6",
+		paidTo: "J",
+		avatar: "/assets/mockPerson.jpeg",
+		debit: 16000,
+		reference: "https://example.com/doc2",
+		comments: "gears",
 	},
 	// More initial data here...
 ];
@@ -168,12 +206,17 @@ export function DataTableDemo() {
 			columnVisibility,
 			rowSelection,
 		},
+		initialState: {
+			pagination: {
+				pageSize: 5,
+			},
+		},
 	});
 
 	const handleAddNewEntry = () => {
 		setData((prevData) => [
-			...prevData,
 			{ id: Date.now().toString(), ...newEntry },
+			...prevData,
 		]);
 		setNewEntry({
 			paidTo: "",
@@ -184,28 +227,37 @@ export function DataTableDemo() {
 		});
 	};
 
-    const handleDelete = () => {
-        setData((prevData) =>
-          prevData.filter((row) => !rowSelection[row.id])
-        );
-        setRowSelection({});
-        
-      };
-      
+	const handleDelete = () => {
+		console.log(rowSelection);
+		const newData = data.filter((row, index)=>{
+			if (!(rowSelection[index] == true)) {
+				return row;
+			}
+		});
+		console.log(newData);
+		setData(newData);
+		// setData((prevData) => {
+		// 	const newData = prevData.filter((row) => !rowSelection[row.id]);
+		// 	return newData;
+		// });
+		setRowSelection({});
+	};
 
 	return (
 		<>
 			<div className="flex justify-between w-48 max-md:mx-auto">
-				<Button className="flex items-center bg-green-500 text-white hover:bg-green-600"
-                onClick={handleAddNewEntry}>
+				<Button
+					className="flex items-center bg-green-500 text-white hover:bg-green-600"
+					onClick={handleAddNewEntry}
+				>
 					<Plus />
 					Add
 				</Button>
 				<Button
 					variant="destructive"
 					className="flex items-cente text-white"
-                    onClick={handleDelete}
-                    disabled={Object.keys(rowSelection).length == 0}
+					onClick={handleDelete}
+					disabled={Object.keys(rowSelection).length == 0}
 				>
 					<Trash />
 					Delete
@@ -226,12 +278,19 @@ export function DataTableDemo() {
 						className="max-w-[200px] dark:bg-[#5D7285] dark:text-white"
 					/>
 					<DropdownMenu className="dark:bg-[#5D7285] dark:text-white">
-						<DropdownMenuTrigger asChild className="dark:bg-[#5D7285] dark:text-white">
+						<DropdownMenuTrigger
+							asChild
+							className="dark:bg-[#5D7285] dark:text-white"
+						>
 							<Button variant="outline">
-								Columns <ChevronDown className="ml-2 h-4 w-4 dark:bg-[#5D7285] dark:text-white" />
+								Columns{" "}
+								<ChevronDown className="ml-2 h-4 w-4 dark:bg-[#5D7285] dark:text-white" />
 							</Button>
 						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="dark:bg-[#5D7285] dark:text-white">
+						<DropdownMenuContent
+							align="end"
+							className="dark:bg-[#5D7285] dark:text-white"
+						>
 							{table
 								.getAllColumns()
 								.filter((column) => column.getCanHide())
@@ -344,7 +403,10 @@ export function DataTableDemo() {
 										className="first:px-0 dark:border-white"
 									>
 										{row.getVisibleCells().map((cell) => (
-											<TableCell key={cell.id} className="text-center">
+											<TableCell
+												key={cell.id}
+												className="text-center"
+											>
 												{flexRender(
 													cell.column.columnDef.cell,
 													cell.getContext()

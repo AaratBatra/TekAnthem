@@ -27,230 +27,226 @@ import { Switch } from "./ui/switch";
 import NavMobActiveContents from "./NavMobActiveContents";
 
 const Sidebar = () => {
-  const { theme, setTheme } = useTheme();
-  const [toggleLedger, setToggleLedger] = useState(false);
-  const [togglePayables, setTogglePayables] = useState(false);
-  const [toggleReceivables, setToggleReceivables] = useState(false);
-  const [toggleInventory, setToggleInventory] = useState(false);
-  const linkData = {
-    Dashboard: [],
-    Payables: ["Supplier", "Payment", "Invoice"],
-    Receivables: ["Customer", "Invoice", "Receipt"],
-    Ledger: ["Account Chart", "Payment", "Receipt", "Journal", "Contra"],
-    Inventory: ["Item"],
-};
-function handleToggleTheme() {
-    if (theme == "dark") {
-        setTheme("light");
-    } else {
-        setTheme("dark");
-    }
-}
+	const { theme, setTheme } = useTheme();
+	const [toggleLedger, setToggleLedger] = useState(false);
+	const [togglePayables, setTogglePayables] = useState(false);
+	const [toggleReceivables, setToggleReceivables] = useState(false);
+	const [toggleInventory, setToggleInventory] = useState(false);
+	const linkData = {
+		Dashboard: [],
+		Payables: ["Supplier", "Payment", "Invoice"],
+		Receivables: ["Customer", "Invoice", "Receipt"],
+		Ledger: ["AccountChart", "Payment", "Receipt", "Journal", "Contra"],
+		Inventory: ["Item"],
+	};
+	function handleToggleTheme() {
+		if (theme == "dark") {
+			setTheme("light");
+		} else {
+			setTheme("dark");
+		}
+	}
 
-  return (
-    <div className="hidden border-r h-full bg-muted/40 md:block">
-				<div className="flex h-full max-h-screen flex-col gap-2 lg:fixed lg:top-0 lg:left-0 lg:w-[280px]">
-					<div className="flex py-4 items-center border-b px-4 lg:px-6">
-						<Link
-							to="/"
-							className="flex items-center gap-2 font-semibold"
+	return (
+		<div className="hidden border-r h-full bg-muted/40 md:block">
+			<div className="flex h-full max-h-screen flex-col gap-2 md:fixed md:top-0 md:left-0 lg:w-[280px]">
+				<div className="flex py-4 items-center border-b px-4 lg:px-6">
+					<Link
+						to="/"
+						className="flex items-center gap-2 font-semibold"
+					>
+						<Package2 className="h-6 w-6" />
+						<span className="">TekAnthem</span>
+					</Link>
+					<Button
+						variant="outline"
+						size="icon"
+						className="ml-auto h-8 w-8"
+					>
+						<Bell className="h-5 w-5" />
+						<span className="sr-only">Toggle notifications</span>
+					</Button>
+				</div>
+				<ScrollArea className="flex-1">
+					<nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+						<NavLink
+							to="/dashboard"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 						>
-							<Package2 className="h-6 w-6" />
-							<span className="">TekAnthem</span>
-						</Link>
-						<Button
-							variant="outline"
-							size="icon"
-							className="ml-auto h-8 w-8"
+							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+								<LayoutDashboard className="h-5 w-5" />
+							</div>
+							Dashboard
+						</NavLink>
+						<NavLink
+							to="/payables"
+							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							onClick={() => setTogglePayables(!togglePayables)}
 						>
-							<Bell className="h-5 w-5" />
-							<span className="sr-only">
-								Toggle notifications
-							</span>
-						</Button>
-					</div>
-					<ScrollArea className="flex-1">
-						<nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-							<Link
-								to="#"
-								className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
-							>
-								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-									<LayoutDashboard className="h-5 w-5" />
-								</div>
-								Dashboard
-							</Link>
-							<NavLink
-								to="#"
-								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
-								onClick={() =>
-									setTogglePayables(!togglePayables)
-								}
-							>
-								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-									<ShoppingCart className="h-5 w-5" />
-								</div>
-								Payables{" "}
-								{togglePayables ? (
-									<ChevronDown className="absolute right-4" />
-								) : (
-									<ChevronRight className="absolute right-4" />
-								)}
-							</NavLink>
+							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+								<ShoppingCart className="h-5 w-5" />
+							</div>
+							Payables{" "}
 							{togglePayables ? (
-								<NavMobActiveContents
-									contents={linkData.Payables}
-								/>
+								<ChevronDown className="absolute right-4" />
 							) : (
-								<></>
+								<ChevronRight className="absolute right-4" />
 							)}
-							<NavLink
-								to="#"
-								className="flex items-center relative gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
-								onClick={() =>
-									setToggleReceivables(!toggleReceivables)
-								}
-							>
-								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-									<Package className="h-5 w-5" />
-								</div>
-								Receivables{" "}
-								{toggleReceivables ? (
-									<ChevronDown className="absolute right-4" />
-								) : (
-									<ChevronRight className="absolute right-4" />
-								)}
-							</NavLink>
+						</NavLink>
+						{togglePayables ? (
+							<NavMobActiveContents
+								contents={linkData.Payables}
+								for={"payables"}
+							/>
+						) : (
+							<></>
+						)}
+						<NavLink
+							to="/receivables"
+							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							onClick={() =>
+								setToggleReceivables(!toggleReceivables)
+							}
+						>
+							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+								<Package className="h-5 w-5" />
+							</div>
+							Receivables{" "}
 							{toggleReceivables ? (
-								<NavMobActiveContents
-									contents={linkData.Receivables}
-								/>
+								<ChevronDown className="absolute right-4" />
 							) : (
-								<></>
+								<ChevronRight className="absolute right-4" />
 							)}
-							<NavLink
-								to="#"
-								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
-								onClick={() => setToggleLedger(!toggleLedger)}
-							>
-								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-									<Table2 className="h-5 w-5" />
-								</div>
-								Ledger{" "}
-								{toggleLedger ? (
-									<ChevronDown className="absolute right-4" />
-								) : (
-									<ChevronRight className="absolute right-4" />
-								)}
-							</NavLink>
+						</NavLink>
+						{toggleReceivables ? (
+							<NavMobActiveContents
+								contents={linkData.Receivables}
+								for={"receivables"}
+							/>
+						) : (
+							<></>
+						)}
+						<NavLink
+							to="/ledger"
+							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							onClick={() => setToggleLedger(!toggleLedger)}
+						>
+							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+								<Table2 className="h-5 w-5" />
+							</div>
+							Ledger{" "}
 							{toggleLedger ? (
-								<NavMobActiveContents
-									contents={linkData.Ledger}
-								/>
+								<ChevronDown className="absolute right-4" />
 							) : (
-								<></>
+								<ChevronRight className="absolute right-4" />
 							)}
-							<NavLink
-								to="#"
-								className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
-								onClick={() =>
-									setToggleInventory(!toggleInventory)
-								}
-							>
-								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-									<Home className="h-5 w-5" />
-								</div>
-								Inventory{" "}
-								{toggleInventory ? (
-									<ChevronDown className="absolute right-4" />
-								) : (
-									<ChevronRight className="absolute right-4" />
-								)}
-							</NavLink>
+						</NavLink>
+						{toggleLedger ? (
+							<NavMobActiveContents
+								contents={linkData.Ledger}
+								for={"ledger"}
+							/>
+						) : (
+							<></>
+						)}
+						<NavLink
+							to="/inventory"
+							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							onClick={() => setToggleInventory(!toggleInventory)}
+						>
+							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+								<Home className="h-5 w-5" />
+							</div>
+							Inventory{" "}
 							{toggleInventory ? (
-								<NavMobActiveContents
-									contents={linkData.Inventory}
-								/>
+								<ChevronDown className="absolute right-4" />
 							) : (
-								<></>
+								<ChevronRight className="absolute right-4" />
 							)}
-						</nav>
-					</ScrollArea>
+						</NavLink>
+						{toggleInventory ? (
+							<NavMobActiveContents
+								contents={linkData.Inventory}
+								for={"inventory"}
+							/>
+						) : (
+							<></>
+						)}
+					</nav>
+				</ScrollArea>
 
-					<div className="mt-auto p-1">
-						<Card x-chunk="dashboard-02-chunk-0">
-							<CardHeader className="p-1 pt-0 pb-1">
-								<CardTitle className="hidden"></CardTitle>
-								<CardDescription className="hidden"></CardDescription>
-								<div className="w-full p-2 flex items-center justify-between">
-									<svg
-										width="51"
-										height="52"
-										viewBox="0 0 51 52"
-										fill={
-											theme == "dark"
-												? "#FFFFFF"
-												: "#5D7285"
-										}
-										xmlns="http://www.w3.org/2000/svg"
-									>
-										<g clipPath="url(#clip0_14_430)">
-											<path
-												d="M27.3639 42.8308C32.5268 42.8308 37.2421 40.4818 40.3661 36.6328C40.8282 36.0635 40.3243 35.2316 39.6101 35.3676C31.4891 36.9142 24.0314 30.6877 24.0314 22.4899C24.0314 17.7677 26.5593 13.4253 30.6678 11.0872C31.3012 10.7268 31.1419 9.76662 30.4223 9.6337C29.4134 9.44767 28.3897 9.354 27.3639 9.35385C18.1245 9.35385 10.6254 16.8411 10.6254 26.0923C10.6254 35.3317 18.1127 42.8308 27.3639 42.8308Z"
-												fill={
-													theme == "dark"
-														? "#FFFFFF"
-														: "#5D7285"
-												}
-											/>
-										</g>
-										<defs>
-											<clipPath id="clip0_14_430">
-												<rect
-													width="33.4769"
-													height="33.4769"
-													fill="white"
-													transform="translate(8.84613 9.35385)"
-												/>
-											</clipPath>
-										</defs>
-									</svg>
-									<Button size="sm" variant="ghost">
-										{theme == "dark"
-											? "Dark Mode"
-											: "Light Mode"}
-									</Button>
-									<Switch
-										onCheckedChange={handleToggleTheme}
-										checked={theme == "dark"}
-									/>
-								</div>
-							</CardHeader>
-							<CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-								<Button
-									size="sm"
-									className="w-full py-6 flex justify-between items-center dark:text-white"
+				<div className="mt-auto p-1">
+					<Card x-chunk="dashboard-02-chunk-0">
+						<CardHeader className="p-1 pt-0 pb-1">
+							<CardTitle className="hidden"></CardTitle>
+							<CardDescription className="hidden"></CardDescription>
+							<div className="w-full p-2 flex items-center justify-between">
+								<svg
+									width="51"
+									height="52"
+									viewBox="0 0 51 52"
+									fill={
+										theme == "dark" ? "#FFFFFF" : "#5D7285"
+									}
+									xmlns="http://www.w3.org/2000/svg"
 								>
-									<svg
-										width="35"
-										height="34"
-										viewBox="0 0 35 34"
-										fill="none"
-										xmlns="http://www.w3.org/2000/svg"
-									>
+									<g clipPath="url(#clip0_14_430)">
 										<path
-											d="M16.7692 2.94352C20.2321 2.94352 23.0563 5.71931 23.0563 9.13675V15.8182H14.5411C13.9308 15.8182 13.4483 16.2924 13.4483 16.8922C13.4483 17.4781 13.9308 17.9663 14.5411 17.9663H23.0563V24.6338C23.0563 28.0512 20.2321 30.841 16.7408 30.841H9.82933C6.35229 30.841 3.52808 28.0652 3.52808 24.6477V9.1507C3.52808 5.71931 6.36648 2.94352 9.84352 2.94352H16.7692ZM26.5995 12.0802C27.018 11.6478 27.7015 11.6478 28.1199 12.0663L32.193 16.1253C32.4022 16.3346 32.5138 16.5996 32.5138 16.8925C32.5138 17.1715 32.4022 17.4505 32.193 17.6457L28.1199 21.7048C27.9107 21.9141 27.6317 22.0256 27.3667 22.0256C27.0877 22.0256 26.8088 21.9141 26.5995 21.7048C26.1811 21.2864 26.1811 20.6029 26.5995 20.1844L28.8313 17.9666H23.0566V15.8185H28.8313L26.5995 13.6006C26.1811 13.1822 26.1811 12.4987 26.5995 12.0802Z"
-											fill="white"
+											d="M27.3639 42.8308C32.5268 42.8308 37.2421 40.4818 40.3661 36.6328C40.8282 36.0635 40.3243 35.2316 39.6101 35.3676C31.4891 36.9142 24.0314 30.6877 24.0314 22.4899C24.0314 17.7677 26.5593 13.4253 30.6678 11.0872C31.3012 10.7268 31.1419 9.76662 30.4223 9.6337C29.4134 9.44767 28.3897 9.354 27.3639 9.35385C18.1245 9.35385 10.6254 16.8411 10.6254 26.0923C10.6254 35.3317 18.1127 42.8308 27.3639 42.8308Z"
+											fill={
+												theme == "dark"
+													? "#FFFFFF"
+													: "#5D7285"
+											}
 										/>
-									</svg>
-									Log out
+									</g>
+									<defs>
+										<clipPath id="clip0_14_430">
+											<rect
+												width="33.4769"
+												height="33.4769"
+												fill="white"
+												transform="translate(8.84613 9.35385)"
+											/>
+										</clipPath>
+									</defs>
+								</svg>
+								<Button size="sm" variant="ghost">
+									{theme == "dark"
+										? "Dark Mode"
+										: "Light Mode"}
 								</Button>
-							</CardContent>
-						</Card>
-					</div>
+								<Switch
+									onCheckedChange={handleToggleTheme}
+									checked={theme == "dark"}
+								/>
+							</div>
+						</CardHeader>
+						<CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+							<Button
+								size="sm"
+								className="w-full py-6 flex justify-between items-center dark:text-white"
+							>
+								<svg
+									width="35"
+									height="34"
+									viewBox="0 0 35 34"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M16.7692 2.94352C20.2321 2.94352 23.0563 5.71931 23.0563 9.13675V15.8182H14.5411C13.9308 15.8182 13.4483 16.2924 13.4483 16.8922C13.4483 17.4781 13.9308 17.9663 14.5411 17.9663H23.0563V24.6338C23.0563 28.0512 20.2321 30.841 16.7408 30.841H9.82933C6.35229 30.841 3.52808 28.0652 3.52808 24.6477V9.1507C3.52808 5.71931 6.36648 2.94352 9.84352 2.94352H16.7692ZM26.5995 12.0802C27.018 11.6478 27.7015 11.6478 28.1199 12.0663L32.193 16.1253C32.4022 16.3346 32.5138 16.5996 32.5138 16.8925C32.5138 17.1715 32.4022 17.4505 32.193 17.6457L28.1199 21.7048C27.9107 21.9141 27.6317 22.0256 27.3667 22.0256C27.0877 22.0256 26.8088 21.9141 26.5995 21.7048C26.1811 21.2864 26.1811 20.6029 26.5995 20.1844L28.8313 17.9666H23.0566V15.8185H28.8313L26.5995 13.6006C26.1811 13.1822 26.1811 12.4987 26.5995 12.0802Z"
+										fill="white"
+									/>
+								</svg>
+								Log out
+							</Button>
+						</CardContent>
+					</Card>
 				</div>
 			</div>
-  )
-}
+		</div>
+	);
+};
 
-export default Sidebar
+export default Sidebar;

@@ -12,6 +12,7 @@ import {
 	Circle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 /**
  * customer, invoice, supplier, item
  */
@@ -21,7 +22,7 @@ function resolveIcon(item) {
 		case "Inventory":
 			jsx = <Home className="h-5 w-5" />;
 			break;
-		case "Account Chart":
+		case "AccountChart":
 			jsx = <PieChart className="h-5 w-5" />;
 			break;
 		case "Payment":
@@ -62,16 +63,16 @@ const NavMobActiveContents = (props) => {
 				   <div className="p-1 ps-8">
 					{props.contents.map((item, index) => {
 						return (
-							<Link
+							<NavLink
 								key={index}
-								to="#"
+								to={`/${props.for}/${item.toLowerCase()}`}
 								className="w-full flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[6px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							>
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									{resolveIcon(item)}
 								</div>
-								{item}
-							</Link>
+								{item == "AccountChart" ? "Accout Chart" : item}
+							</NavLink>
 						);
 					})}</div>
 			) : (
