@@ -99,4 +99,7 @@
 	td {
 		padding: 1rem 0.25rem !important;
 	}
+	.edit {
+		padding: 0 !important;
+	}
 }

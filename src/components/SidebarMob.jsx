@@ -40,7 +40,7 @@ const SidebarMob = () => {
 		Dashboard: [],
 		Payables: ["Supplier", "Payment", "Invoice"],
 		Receivables: ["Customer", "Invoice", "Receipt"],
-		Ledger: ["Account Chart", "Payment", "Receipt", "Journal", "Contra"],
+		Ledger: ["Chart of Account", "Payment", "Receipt", "Journal", "Contra"],
 		Inventory: ["Item"],
 	};
 

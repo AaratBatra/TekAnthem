@@ -22,7 +22,7 @@ function resolveIcon(item) {
 		case "Inventory":
 			jsx = <Home className="h-5 w-5" />;
 			break;
-		case "AccountChart":
+		case "Chart of Account":
 			jsx = <PieChart className="h-5 w-5" />;
 			break;
 		case "Payment":
@@ -71,7 +71,8 @@ const NavMobActiveContents = (props) => {
 								<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 									{resolveIcon(item)}
 								</div>
-								{item == "AccountChart" ? "Accout Chart" : item}
+								{/* {item == "AccountChart" ? "Accout Chart" : item} */}
+								{item}
 							</NavLink>
 						);
 					})}</div>

@@ -17,44 +17,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs.jsx";
 import { useToast } from "./ui/use-toast.js";
-import DetailsTable from "./DetailsTable.jsx";
+//import DetailsTable from "./DetailsTable.jsx";
 import {DataTableDemo} from "./ExpTable.jsx"
 //zod schema
 
-const formSchema = z.object({
-	voucherNo: z.coerce.number({ required_error: "voucherNo is required" }),
-	voucherDate: z.coerce.date(),
-	bank: z
-		.string({ message: "bank is required" })
-		.min(1, "bank cannot be empty"),
-	branch: z.string(),
-	comments: z.string().optional(),
-});
+// const formSchema = z.object({
+// 	voucherNo: z.coerce.number({ required_error: "voucherNo is required" }),
+// 	voucherDate: z.coerce.date(),
+// 	bank: z
+// 		.string({ message: "bank is required" })
+// 		.min(1, "bank cannot be empty"),
+// 	branch: z.string(),
+// 	comments: z.string().optional(),
+// });
 
 const Details = () => {
-    const { toast } = useToast();
-	const { theme, setTheme } = useTheme();
+    // const { toast } = useToast();
+	// const { theme, setTheme } = useTheme();
 
-	const form = useForm({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			voucherNo: "",
-			voucherDate: "",
-			bank: "",
-			branch: "",
-			comments: "",
-		},
-	});
-	async function onSubmit(data) {
-		console.log(data);
-		toast({
-			variant: "success",
-			title: "Success",
-			description: "Voucher created successfully",
-		});
-		await new Promise((r) => setTimeout(r, 2000));
-		form.reset();
-	}
+	// const form = useForm({
+	// 	resolver: zodResolver(formSchema),
+	// 	defaultValues: {
+	// 		voucherNo: "",
+	// 		voucherDate: "",
+	// 		bank: "",
+	// 		branch: "",
+	// 		comments: "",
+	// 	},
+	// });
+	// async function onSubmit(data) {
+	// 	console.log(data);
+	// 	toast({
+	// 		variant: "success",
+	// 		title: "Success",
+	// 		description: "Voucher created successfully",
+	// 	});
+	// 	await new Promise((r) => setTimeout(r, 2000));
+	// 	form.reset();
+	// }
 	return (
 		<div
 			style={{

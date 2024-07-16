@@ -10,6 +10,7 @@ import {
 import {
 	ArrowUpDown,
 	ChevronDown,
+	Edit,
 	MoreHorizontal,
 	Plus,
 	Trash,
@@ -182,12 +183,14 @@ export function DataTableDemo() {
 	const [columnVisibility, setColumnVisibility] = React.useState({});
 	const [rowSelection, setRowSelection] = React.useState({});
 	const [newEntry, setNewEntry] = React.useState({
+		id: "",
 		paidTo: "",
 		avatar: "",
 		debit: "",
 		reference: "",
 		comments: "",
 	});
+	const [isEditing, setIsEditing] = React.useState(false);
 
 	const table = useReactTable({
 		data,
@@ -215,10 +218,17 @@ export function DataTableDemo() {
 
 	const handleAddNewEntry = () => {
 		setData((prevData) => [
-			{ id: Date.now().toString(), ...newEntry },
+			{
+				id: Date.now().toString(),
+				paidTo: newEntry.paidTo,
+				debit: newEntry.debit,
+				reference: newEntry.reference,
+				comments: newEntry.comments,
+			},
 			...prevData,
 		]);
 		setNewEntry({
+			id: "",
 			paidTo: "",
 			avatar: "",
 			debit: "",
@@ -226,10 +236,20 @@ export function DataTableDemo() {
 			comments: "",
 		});
 	};
-
+	const handleEdit = (row) => {
+		setIsEditing(!isEditing);
+		setNewEntry({
+			id: row.original.id,
+			paidTo: row.original.paidTo,
+			avatar: row.original.avatar,
+			debit: row.original.debit.toString(),
+			reference: row.original.reference,
+			comments: row.original.comments,
+		});
+	};
 	const handleDelete = () => {
 		console.log(rowSelection);
-		const newData = data.filter((row, index)=>{
+		const newData = data.filter((row, index) => {
 			if (!(rowSelection[index] == true)) {
 				return row;
 			}
@@ -242,26 +262,51 @@ export function DataTableDemo() {
 		// });
 		setRowSelection({});
 	};
+	const handleChangeEntry = () => {
+		setData((prevData) =>
+			prevData.map((item) =>
+				item.id === newEntry.id ? { ...newEntry } : item
+			)
+		);
+		setIsEditing(false);
+		setNewEntry({
+			id: "",
+			paidTo: "",
+			avatar: "",
+			debit: "",
+			reference: "",
+			comments: "",
+		});
+	};
 
 	return (
 		<>
-			<div className="flex justify-between w-48 max-md:mx-auto">
+			<div className="flex max-md:flex-wrap max-md:justify-between w-1/3 max-md:w-48 max-md:mx-auto">
 				<Button
-					className="flex items-center bg-green-500 text-white hover:bg-green-600"
+					className="flex items-center bg-green-500 text-white hover:bg-green-600 md:mr-2"
 					onClick={handleAddNewEntry}
+					disabled={isEditing}
 				>
 					<Plus />
 					Add
 				</Button>
 				<Button
 					variant="destructive"
-					className="flex items-cente text-white"
+					className="flex items-center text-white md:mr-2"
 					onClick={handleDelete}
 					disabled={Object.keys(rowSelection).length == 0}
 				>
 					<Trash />
 					Delete
 				</Button>
+				<button
+					className="justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 flex items-center bg-sky-400 text-white max-md:mx-auto md:mr-2 max-md:mt-2 disabled:flex"
+					onClick={handleChangeEntry}
+					disabled={!isEditing}
+				>
+					<Edit />
+					{isEditing ? "Save Changes" : "Edit"}
+				</button>
 			</div>
 			<div className="w-full">
 				<div className="flex gap-2 w-fit items-center py-4 mx-auto">
@@ -400,7 +445,7 @@ export function DataTableDemo() {
 										data-state={
 											row.getIsSelected() && "selected"
 										}
-										className="first:px-0 dark:border-white"
+										className="relative first:px-0 dark:border-white"
 									>
 										{row.getVisibleCells().map((cell) => (
 											<TableCell
@@ -413,6 +458,18 @@ export function DataTableDemo() {
 												)}
 											</TableCell>
 										))}
+										<TableCell className="edit absolute z-10 top-1 left-1 md:left-2 h-4" style={{padding: "0 !important"}}>
+											<Button
+												variant="ghost"
+												onClick={() => handleEdit(row)}
+												className="p-0 h-4 flex items-start"
+											>
+												<Edit className="h-4 w-4 text-foreground" />
+											</Button>
+										</TableCell>
+										{/* <Button className="absolute z-10 top-1 left-1 p-0 h-4 flex items-start" variant="ghost" onClick={()=>handleEdit(row)}>
+											<Edit className="h-4 w-4 text-foreground" />
+										</Button> */}
 									</TableRow>
 								))
 							) : (

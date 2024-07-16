@@ -76,7 +76,7 @@ const router = createBrowserRouter([
 				element: <Ledger />,
 				children: [
 					{
-						path: "/ledger/accountchart",
+						path: "/ledger/Chart of Account",
 						element: <AccountChart />
 					},
 					{
