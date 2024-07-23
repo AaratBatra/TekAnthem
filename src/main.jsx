@@ -7,7 +7,7 @@ import { Dashboard } from "./pages/Dashboard/Dashboard.jsx";
 import App from "./App.jsx";
 import Landing from "./pages/Landing.jsx";
 import Payment from "./pages/Ledger/Payment.jsx";
-import { Toaster } from './components/ui/toaster.jsx';
+import { Toaster } from "./components/ui/toaster.jsx";
 import ErrorPage from "./pages/ErrorPage";
 import Payables from "./pages/Payables/Payables";
 import Supplier from "./pages/Payables/Supplier";
@@ -18,7 +18,7 @@ import Customer from "./pages/Receivables/Customer";
 import ReceivableInvoice from "./pages/Receivables/ReceivableInvoice";
 import ReceivableReceipt from "./pages/Receivables/ReceivableReceipt";
 import Ledger from "./pages/Ledger/Ledger";
-import AccountChart from "./pages/Ledger/AccountChart";
+import AccountChart from "./pages/Ledger/ChartOfAcc";
 import LedgerReceipt from "./pages/Ledger/LedgerReceipt";
 import Journal from "./pages/Ledger/Journal";
 import Contra from "./pages/Ledger/Contra";
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/dashboard",
-				element: <Dashboard />
+				element: <Dashboard />,
 			},
 			{
 				path: "/payables",
@@ -41,17 +41,17 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: "/payables/supplier",
-						element: <Supplier />
+						element: <Supplier />,
 					},
 					{
 						path: "/payables/payment",
-						element: <PayablePayment />
+						element: <PayablePayment />,
 					},
 					{
 						path: "/payables/invoice",
-						element: <PayableInvoice />
-					}
-				]
+						element: <PayableInvoice />,
+					},
+				],
 			},
 			{
 				path: "/receivables",
@@ -59,64 +59,62 @@ const router = createBrowserRouter([
 				children: [
 					{
 						path: "/receivables/customer",
-						element: <Customer />
+						element: <Customer />,
 					},
 					{
 						path: "/receivables/invoice",
-						element: <ReceivableInvoice />
-					}, 
+						element: <ReceivableInvoice />,
+					},
 					{
 						path: "/receivables/receipt",
-						element: <ReceivableReceipt />
-					}
-				]
+						element: <ReceivableReceipt />,
+					},
+				],
 			},
 			{
-				path: "/ledger", 
+				path: "/ledger",
 				element: <Ledger />,
 				children: [
 					{
-						path: "/ledger/Chart of Account",
-						element: <AccountChart />
+						path: "/ledger/chart of account",
+						element: <AccountChart />,
 					},
 					{
 						path: "/ledger/payment",
-						element: <Payment />
+						element: <Payment />,
 					},
 					{
 						path: "/ledger/receipt",
-						element: <LedgerReceipt />
+						element: <LedgerReceipt />,
 					},
 					{
 						path: "/ledger/journal",
-						element: <Journal />
+						element: <Journal />,
 					},
 					{
 						path: "/ledger/contra",
-						element: <Contra />
-					}
-				]
-			}, 
+						element: <Contra />,
+					},
+				],
+			},
 			{
 				path: "/inventory",
 				element: <Inventory />,
 				children: [
 					{
 						path: "/inventory/item",
-						element: <Item />
-					}
-				]
-			}
-		]
+						element: <Item />,
+					},
+				],
+			},
+		],
 	},
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-			<RouterProvider router={router}>
-				<App />
-				<Toaster />
-			</RouterProvider>
-		</ThemeProvider>
-	</React.StrictMode>
+	<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+		<RouterProvider router={router}>
+			<App />
+			<Toaster />
+		</RouterProvider>
+	</ThemeProvider>
 );

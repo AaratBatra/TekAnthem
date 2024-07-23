@@ -11,6 +11,7 @@ import {
 	ArrowUpDown,
 	ChevronDown,
 	Edit,
+	Eye,
 	MoreHorizontal,
 	Plus,
 	Trash,
@@ -327,9 +328,10 @@ export function DataTableDemo() {
 							asChild
 							className="dark:bg-[#5D7285] dark:text-white"
 						>
-							<Button variant="outline">
+							<Button variant="outline" className="text-muted-foreground hover:text-muted-foreground">
+								<Eye className="mr-1 h-4 w-4 dark:bg-[#5D7285] dark:text-white" />{" "}
 								Columns{" "}
-								<ChevronDown className="ml-2 h-4 w-4 dark:bg-[#5D7285] dark:text-white" />
+								<ChevronDown className="ml-1 h-4 w-4 dark:bg-[#5D7285] dark:text-white" />
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent

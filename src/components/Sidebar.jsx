@@ -36,7 +36,7 @@ const Sidebar = () => {
 		Dashboard: [],
 		Payables: ["Supplier", "Payment", "Invoice"],
 		Receivables: ["Customer", "Invoice", "Receipt"],
-		Ledger: ["AccountChart", "Payment", "Receipt", "Journal", "Contra"],
+		Ledger: ["Chart of Account", "Payment", "Receipt", "Journal", "Contra"],
 		Inventory: ["Item"],
 	};
 	function handleToggleTheme() {
@@ -56,7 +56,7 @@ const Sidebar = () => {
 						className="flex items-center gap-2 font-semibold"
 					>
 						<Package2 className="h-6 w-6" />
-						<span className="">TekAnthem</span>
+						<span>TekAnthem</span>
 					</Link>
 					<Button
 						variant="outline"
@@ -80,7 +80,7 @@ const Sidebar = () => {
 						</NavLink>
 						<NavLink
 							to="/payables"
-							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="flex relative items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setTogglePayables(!togglePayables)}
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
@@ -225,7 +225,7 @@ const Sidebar = () => {
 						<CardContent className="p-2 pt-0 md:p-4 md:pt-0">
 							<Button
 								size="sm"
-								className="w-full py-6 flex justify-between items-center dark:text-white"
+								className="w-full py-6 flex justify-between items-center dark:text-white hover:bg-slate-600"
 							>
 								<svg
 									width="35"

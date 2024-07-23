@@ -12,6 +12,7 @@ import {
 	Home,
 	ChevronRight,
 	ChevronDown,
+	Bell,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -66,16 +67,28 @@ const SidebarMob = () => {
 			<SheetContent side="left" className="flex flex-col max-sm:px-3">
 				<ScrollArea>
 					<nav className="grid gap-2 text-lg font-medium">
+						<div className="flex item-center py-4 px-4 border-b">
 						<Link
 							to="/"
 							className="flex items-center gap-2 text-lg font-semibold"
 						>
 							<Package2 className="h-6 w-6" />
-							<span className="sr-only">TekAnthem</span>
+							<span>TekAnthem</span>
 						</Link>
+						<Button
+							variant="outline"
+							size="icon"
+							className="ml-auto h-8 w-8"
+						>
+							<Bell className="h-5 w-5" />
+							<span className="sr-only">
+								Toggle notifications
+							</span>
+						</Button>
+						</div>
 						<Link
 							to="/dashboard"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 								<LayoutDashboard className="h-5 w-5" />
@@ -84,7 +97,8 @@ const SidebarMob = () => {
 						</Link>
 						<NavLink
 							to="/payables"
-							className="mx-[-0.65rem] flex relative items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="flex relative items-center gap-4 rounded-lg px-3 py-2  text-muted-foreground 
+							transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setTogglePayables(!togglePayables)}
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
@@ -107,7 +121,7 @@ const SidebarMob = () => {
 						)}
 						<NavLink
 							to="/receivables"
-							className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="relative flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() =>
 								setToggleReceivables(!toggleReceivables)
 							}
@@ -132,7 +146,7 @@ const SidebarMob = () => {
 						)}
 						<NavLink
 							to="/ledger"
-							className="mx-[-0.65rem] relative flex items-center gap-4 rounded-xl px-3 py-2 max-md:py-[3px] text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="relative flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setToggleLedger(!toggleLedger)}
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
@@ -146,13 +160,16 @@ const SidebarMob = () => {
 							)}
 						</NavLink>
 						{toggleLedger ? (
-							<NavMobActiveContents contents={linkData.Ledger} for={"ledger"} />
+							<NavMobActiveContents
+								contents={linkData.Ledger}
+								for={"ledger"}
+							/>
 						) : (
 							<></>
 						)}
 						<NavLink
 							to="/inventory"
-							className="mx-[-0.65rem] relative flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setToggleInventory(!toggleInventory)}
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">

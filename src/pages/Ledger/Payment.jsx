@@ -2,7 +2,7 @@ import Details from "@/components/Details";
 import Payments from "@/components/Payments";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import React from "react";
+
 
 const Payment = () => {
 	return (
