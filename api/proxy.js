@@ -4,12 +4,14 @@ export default async function handler(req, res) {
 		""
 	)}`;
 
+    console.log(backendUrl);
+
 	try {
 		const response = await fetch(backendUrl, {
 			method: req.method,
 			headers: {
 				...req.headers,
-				host: "your-backend-url", // or any custom headers needed by your backend
+				//host: "your-backend-url", // or any custom headers needed by your backend
 			},
 			body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
 		});
