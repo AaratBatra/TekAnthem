@@ -3,8 +3,7 @@ import { performLogout } from "@/store/slices/AuthSlice";
 
 // Function to set up Axios interceptors
 export const setupAxiosInterceptors = (dispatch) => {
-	axios.defaults.baseURL = "/api/proxy/"
-		//import.meta.env.VITE_API_URL || "http://3.218.234.95:8080/v1/";
+	axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://3.218.234.95:8080/v1/";
 	axios.defaults.headers.post["Content-Type"] = "application/json";
 
 	axios.interceptors.request.use(
