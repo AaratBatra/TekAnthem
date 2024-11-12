@@ -1,0 +1,454 @@
+// const formSchema = z.object({
+// 	voucherNo: z.coerce.number({ required_error: "voucherNo is required" }),
+// 	voucherDate: z.coerce.date(),
+// 	bank: z
+// 		.string({ message: "bank is required" })
+// 		.min(1, "bank cannot be empty"),
+// 	branch: z.string(),
+// 	comments: z.string().optional(),
+// });
+
+import { Link } from "react-router-dom";
+import { useTheme } from "./themeprovider.jsx";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { useToast } from "./ui/use-toast.js";
+
+
+/*
+    voucherNo (manual)
+    bank (account_code pull from account master for recommending)
+    branch ((branch_name) pull from branch_master for recommending)
+    voucherDate (manual)
+    comments (manual)
+    
+    paidTo -> supplier_master -> supplier_name (pull)
+    debit -> manually entered by the user
+    reference -> link entered by user
+    comments -> manually entered by the user
+
+    	// async function onSubmit(data) {
+	// 	console.log(data);
+	// 	toast({
+	// 		variant: "success",
+	// 		title: "Success",
+	// 		description: "Voucher created successfully",
+	// 	});
+	// 	await new Promise((r) => setTimeout(r, 2000));
+	// 	form.reset();
+	// }
+*/
+
+// Payments.jsx command box trial
+<Popover>
+											<PopoverTrigger asChild>
+												<FormControl
+													// onChange={(e) =>
+													// 	handleInputChange(
+													// 		"branch",
+													// 		e.target.value
+													// 	)
+													// }
+												>
+													<Button
+														variant="outline"
+														role="combobox"
+														className={cn(
+															"w-[200px] justify-between",
+															!field.value &&
+																"text-muted-foreground"
+														)}
+													>
+														{field.value
+															? branches.find(
+																	(
+																		branch
+																	) =>
+																		branch ===
+																		field.value
+															  )//?.label
+															: "Select branch"}
+														<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<div>
+											<PopoverContent className="w-[200px] p-0 z-[100]">
+												<Command disablePointerSelection={false}>
+													<CommandInput placeholder="Search branches..." />
+													<CommandList>
+														<CommandEmpty>
+															No branch found.
+														</CommandEmpty>
+														<CommandGroup>
+															{branches.map(
+																(branch, index) => (
+																	<div>
+																	<CommandItem
+																		value={branch}
+																		key={index}
+																		className="hover:bg-blue-500"
+																		onSelect={() => {
+																			console.log("selected")
+																			form.setValue(
+																				"branch",
+																				branch
+																			);
+																		}}
+																	>
+																		<Check
+																			className={cn(
+																				"mr-2 h-4 w-4",
+																				branch ===
+																					field.value
+																					? "opacity-100"
+																					: "opacity-0"
+																			)}
+																		/>
+																		{
+																			branch
+																		}
+																	</CommandItem></div>
+																)
+															)}
+														</CommandGroup>
+													</CommandList>
+												</Command>
+											</PopoverContent>
+											</div>
+										</Popover>
+
+										// const inputLength = inputValue.length;
+		// const [branches, setBranches] = useState(["mumbai", "bangalore", "delhi", "pune", "agra", "jammu", "goa"]);
+		// return inputLength === 0
+		// 	? []
+		// 	: branches.filter(branch =>
+		// 		branch.toLowerCase().slice(0, inputLength) === inputValue
+		// 	);
+		import { cn } from "@/lib/utils";
+		import { Button } from "./ui/button.jsx";
+import { Check, ChevronsUpDown } from "lucide-react"
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from "@/components/ui/command"
+
+
+/* <Label
+										htmlFor={id}
+										className="text-left text-foreground"
+									>
+										{field.displayName}
+									</Label>
+									{field.type === "comment" ? (
+										<Textarea
+											id={id}
+											defaultValue={row.getValue(
+												field.name
+											)}
+											onChange={(e) => {
+												const obj = { ...entry };
+												obj[field.name] =
+													e.target.value;
+												setEntry(obj);
+											}}
+											rows={3}
+											className="col-span-3 dark:bg-[#5D7285] dark:text-white"
+										/>
+									) : field.type == "boolean" ? (
+										<TekTableFlag
+											bool={row.getValue(field.name)}
+											entry={entry}
+											setEntry={setEntry}
+											field={field}
+										/>
+									) : (
+										<Input
+											id={id}
+											defaultValue={row.getValue(
+												field.name
+											)}
+											onChange={(e) => {
+												const obj = { ...entry };
+												obj[field.name] =
+													e.target.value;
+												setEntry(obj);
+											}}
+											className="col-span-3 dark:bg-[#5D7285] dark:text-white"
+										/>
+									)} */
+
+
+									// const formSchema = z.object({
+// 	accountCode: z.any(),
+// 	accountDescription: z.string({
+// 		required_error: "account description is required",
+// 	}),
+// 	group: z
+// 		.string({ required_error: "Group description is required" })
+// 		.min(10, "Group description is too short"),
+// 	groupCode: z.any(),
+// 	Type: z.string({required_error: "group type is required"}),
+// 	subledgerFlag: z.any()
+// });
+// export function TekTablePopUpEdit({ row, colData, updateEntry }) {
+// 	const [entry, setEntry] = useState({});
+// 	const form = useForm({
+// 		resolver: zodResolver(formSchema),
+// 		defaultValues: {
+// 			accountCode: row.original.accountCode,
+// 			accountDescription: row.original.accountDescription,
+// 			group: row.original.group,
+// 			groupCode: String(row.original.groupCode),
+// 			Type: row.original.groupType,
+// 		}
+// 	});
+// 	useEffect(() => {
+// 		let initialEntry = {};
+// 		initialEntry.id = row.original.id;
+// 		initialEntry.avatar = row.original.avatar;
+// 		colData.forEach((col) => {
+// 			initialEntry[col.name] = row.getValue(col.name);
+// 		});
+// 		//console.log(initialEntry)
+// 		form.reset(initialEntry);
+// 		setEntry(initialEntry);
+// 	}, [row, colData]);
+
+// 	function handleInputChange(fieldName, value) {
+// 		const updatedData = { ...form.getValues(), [fieldName]: value };
+// 		setEntry(updatedData);
+// 	}
+// 	function onSubmit(values) {
+// 		console.log(values)
+// 	}
+
+// 	return (
+// 		<DialogContent className="sm:max-w-[50%] sm:h-[80%]">
+// 			<DialogHeader>
+// 				<DialogTitle>Edit</DialogTitle>
+// 				<DialogDescription>
+// 					Make changes to your row here. Click save when you're done.
+// 				</DialogDescription>
+// 			</DialogHeader>
+// 			<Form {...form}>
+// 				<form onSubmit={form.handleSubmit(onSubmit)}>
+// 					<div className="grid gap-4 pb-4">
+// 						{colData.map((field, index) => {
+// 							const id = `${field.name}-${row.original.id}`;
+// 							return (
+// 								// <div
+// 								// 	key={id}
+// 								// 	className="grid grid-cols-4 items-center gap-4"
+// 								// >
+// 									<FormField
+// 										control={form.control}
+// 										name={field.name}
+// 										key={id}
+// 										render={(r) => {
+// 											return (
+// 											<FormItem className="grid tektablepopupformitem items-center relative">
+// 												<FormMessage className="absolute z-10 top-10"/>
+// 												<FormLabel className="text-left text-foreground">
+// 													{field.displayName}
+// 												</FormLabel>
+
+// 												<FormControl
+// 													onChange={(e) =>
+// 														handleInputChange(
+// 															field.name,
+// 															e.target.value
+// 														)
+// 													}
+// 												>
+// 													{field.type ===
+// 													"comment" ? (
+// 														<Textarea
+// 															id={id}
+// 															{...r.field}
+// 															className="col-span-1 dark:bg-[#5D7285] dark:text-white"
+// 															// defaultValue={row.getValue(
+// 															// 	field.name
+// 															// )}
+// 														/>
+// 													) : field.type ==
+// 													  "boolean" ? (
+// 														<TekTableFlag
+// 															bool={row.getValue(
+// 																field.name
+// 															)}
+// 															entry={entry}
+// 															setEntry={setEntry}
+// 															field={field}
+// 														/>
+// 													) : (
+// 														<Input
+// 															placeholder={
+// 																field.displayName
+// 															}
+// 															type="text"
+// 															className="dark:bg-[#5D7285] dark:text-white"
+// 															{...r.field}
+// 															// defaultValue={row.getValue(
+// 															// 	field.name
+// 															// )}
+// 														/>
+// 													)}
+// 												</FormControl>
+
+// 											</FormItem>
+// 										)}}
+// 									/>
+// 								// </div>
+// 							);
+// 						})}
+// 					</div>
+// 					<DialogFooter>
+// 						<Button
+// 							variant="outline"
+// 							className="bg-transparent dark:bg-sky-500/60 border border-sky-500/60 dark:border-white/20 text-gray-600 dark:text-white flex gap-2 items-center hover:bg-sky-500/60 hover:text-white"
+// 							type="submit"
+// 						>
+// 							<Save className="h-4 w-4" />
+// 							Save Changes
+// 						</Button>
+// 					</DialogFooter>
+// 				</form>
+// 			</Form>
+// 		</DialogContent>
+// 	);
+// }
+<DialogContent className="sm:max-w-[50%] sm:h-[80%]">
+			<DialogHeader>
+				<DialogTitle>Add a new entry</DialogTitle>
+				<DialogDescription>
+					Add your details here. Click add when you're done.
+				</DialogDescription>
+			</DialogHeader>
+			<form onSubmit={onSubmit}>
+			<div className="grid gap-4 pb-4">
+				{colData.map((field, index) => {
+					const id = `${field.name}-${index}`;
+					return (
+						<div
+							key={id}
+							className="grid tektablepopupformitem items-center gap-4"
+						>
+							<Label
+								htmlFor={id}
+								className="text-left text-foreground"
+							>
+								{field.displayName}
+							</Label>
+							{field.type === "comment" ? (
+								<Textarea
+									id={id}
+									onChange={(e) => {
+										const obj = { ...entry };
+										obj[field.name] = e.target.value;
+										setEntry(obj);
+									}}
+									rows={3}
+									value={entry[field.name]}
+									className="col-span-1 dark:bg-[#5D7285] dark:text-white"
+								/>
+							) : field.type == "boolean" ? (
+								<TekTableFlag
+									bool={false}
+									entry={entry}
+									setEntry={setEntry}
+									field={field}
+								/>
+							): field.autoComplete ? (
+								<AutoCompleteInput
+									className="dark:bg-[#5D7285] dark:text-white"
+									value={entry[field.name] || ""}
+									name={field.name}
+									field={field}
+									onChange={(e, suggestion) =>
+										handleInputChange(
+											field,
+											e.target.value,
+											suggestion
+										)
+									}
+									updateChildren={updateChildren}
+									placeholder={field.displayName}
+									urlpath={field.urlPath}
+								/>
+							) : (
+								<Input
+									id={id}
+									onChange={(e) => {
+										const obj = { ...entry };
+										obj[field.name] = e.target.value;
+										setEntry(obj);
+									}}
+									value={entry[field.name]}
+									disabled={field.disabled || false}
+									className="dark:bg-[#5D7285] dark:text-white"
+								/>
+							)}
+							{errors[field.name] && (
+								<p className="text-red-500">
+									{errors[field.name]}
+								</p>
+							)}
+						</div>
+					);
+				})}
+			</div>
+			<DialogFooter>
+				<Button
+					type="submit"
+					className="flex items-center bg-green-500 text-foreground hover:bg-green-600 md:mr-2"
+					onClick={() => {
+						validateEntry();
+						updateEntry(entry);
+					}}
+				>
+					<Plus />
+					Add
+				</Button>
+			</DialogFooter>
+			</form>
+		</DialogContent>
+
+// buttons of COA before
+
+// add button
+
+{/* <Button
+							variant="outline"
+							className="flex items-center gap-2 bg-transparent border border-green-500/60 text-gray-600 dark:text-white hover:bg-green-500/60 md:mr-2 hover:text-white"
+						>
+							<Plus className="h-4 w-4" />
+							Add
+						</Button> */}
+{/* <Button
+					variant="outline"
+					className="flex items-center gap-2 bg-transparent border border-red-500/60 text-gray-600 dark:text-white md:mr-2 hover:bg-red-500/60 hover:text-white"
+					onClick={handleDeleteEntry}
+					disabled={Object.keys(rowSelection).length == 0}
+				>
+					<Trash className="h-4 w-4" />
+					Delete
+				</Button> */}
+				{/* <Button
+					variant="outline"
+					className="bg-transparent border border-sky-500/60 dark:border-white/20 text-gray-600 dark:text-white flex gap-2 items-center hover:bg-sky-500/60 hover:text-white"
+					onClick={() => handleSave()}
+				>
+					<Save className="h-4 w-4" />
+					Save
+				</Button> */}

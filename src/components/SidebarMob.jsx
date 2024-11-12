@@ -1,6 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 import { useTheme } from "./themeprovider.jsx";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { performLogout } from "@/store/slices/AuthSlice.js";
 //ui imports
 import {
 	LayoutDashboard,
@@ -24,7 +26,14 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet";
 import { Switch } from "./ui/switch";
 import NavMobActiveContents from "./NavMobActiveContents";
 import { useToast } from "./ui/use-toast.js";
@@ -36,7 +45,7 @@ const SidebarMob = () => {
 	const [togglePayables, setTogglePayables] = useState(false);
 	const [toggleReceivables, setToggleReceivables] = useState(false);
 	const [toggleInventory, setToggleInventory] = useState(false);
-
+	const dispatch = useDispatch();
 	const linkData = {
 		Dashboard: [],
 		Payables: ["Supplier", "Payment", "Invoice"],
@@ -65,26 +74,36 @@ const SidebarMob = () => {
 				</Button>
 			</SheetTrigger>
 			<SheetContent side="left" className="flex flex-col max-sm:px-3">
+				<div className="hidden">
+					<SheetHeader>
+						<SheetTitle>Edit profile</SheetTitle>
+						<SheetDescription>
+							Make changes to your profile here. Click save when
+							you're done.
+						</SheetDescription>
+					</SheetHeader>
+				</div>
 				<ScrollArea>
 					<nav className="grid gap-2 text-lg font-medium">
 						<div className="flex item-center py-4 px-4 border-b">
-						<Link
-							to="/"
-							className="flex items-center gap-2 text-lg font-semibold"
-						>
-							<Package2 className="h-6 w-6" />
-							<span>TekAnthem</span>
-						</Link>
-						<Button
-							variant="outline"
-							size="icon"
-							className="ml-auto h-8 w-8"
-						>
-							<Bell className="h-5 w-5" />
-							<span className="sr-only">
-								Toggle notifications
-							</span>
-						</Button>
+							<Link
+								to="/"
+								className="flex items-center gap-2 text-lg font-semibold"
+							>
+								<img src="/assets/ta-logo.png" className="block h-6 w-6" />
+								{/* <Package2 className="h-6 w-6" /> */}
+								<span>TekAnthem</span>
+							</Link>
+							<Button
+								variant="outline"
+								size="icon"
+								className="ml-auto h-8 w-8"
+							>
+								<Bell className="h-5 w-5" />
+								<span className="sr-only">
+									Toggle notifications
+								</span>
+							</Button>
 						</div>
 						<Link
 							to="/dashboard"
@@ -97,8 +116,7 @@ const SidebarMob = () => {
 						</Link>
 						<NavLink
 							to="/payables"
-							className="flex relative items-center gap-4 rounded-lg px-3 py-2  text-muted-foreground 
-							transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className="relative flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground  hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
 							onClick={() => setTogglePayables(!togglePayables)}
 						>
 							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
@@ -247,7 +265,13 @@ const SidebarMob = () => {
 						<CardContent className="px-6 pt-2 pb-3 max-sm:p-2">
 							<Button
 								size="sm"
-								className="w-full py-6 flex justify-between items-center"
+								className="w-full py-6 flex justify-between items-center dark:text-white"
+								onClick={() => {
+									dispatch(performLogout());
+									navigate("/login", {
+										replace: true,
+									});
+								}}
 							>
 								<svg
 									width="35"

@@ -12,7 +12,6 @@ import { RecentSales } from "@/pages/Dashboard/components/recent-sales";
 import { Search } from "@/pages/Dashboard/components/search";
 
 
-
 export function Dashboard() {
   return (
     <>

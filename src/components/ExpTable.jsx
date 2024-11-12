@@ -12,20 +12,15 @@ import {
 	ChevronDown,
 	Edit,
 	Eye,
-	MoreHorizontal,
 	Plus,
 	Trash,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -37,60 +32,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarImage } from "@/components/ui/avatar"; // Import your Avatar component
-
-const initialData = [
-	{
-		id: "1",
-		paidTo: "Aarat Batra",
-		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
-		debit: 10000,
-		reference: "https://example.com/doc1",
-		comments: "Payment for services",
-	},
-	{
-		id: "2",
-		paidTo: "Jane Smith",
-		avatar: "/assets/mockPerson.jpeg",
-		debit: 5000,
-		reference: "https://example.com/doc2",
-		comments: "Reimbursement",
-	},
-	{
-		id: "3",
-		paidTo: "Jill",
-		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
-		debit: 7000,
-		reference: "https://example.com/doc1",
-		comments: "Car",
-	},
-	{
-		id: "4",
-		paidTo: "Joe Smith",
-		avatar: "/assets/mockPerson.jpeg",
-		debit: 9000,
-		reference: "https://example.com/doc2",
-		comments: "Cycle",
-	},
-	{
-		id: "5",
-		paidTo: "Manjit",
-		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
-		debit: 2000,
-		reference: "https://example.com/doc1",
-		comments: "new",
-	},
-	{
-		id: "6",
-		paidTo: "J",
-		avatar: "/assets/mockPerson.jpeg",
-		debit: 16000,
-		reference: "https://example.com/doc2",
-		comments: "gears",
-	},
-	// More initial data here...
-];
-
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import AutoCompleteInput from "./AutoCompleteInput";
 export const columns = [
 	{
 		id: "select",
@@ -177,8 +120,7 @@ export const columns = [
 	},
 ];
 
-export function DataTableDemo() {
-	const [data, setData] = React.useState(initialData);
+export function DataTableDemo({data, setData}) {
 	const [sorting, setSorting] = React.useState([]);
 	const [columnFilters, setColumnFilters] = React.useState([]);
 	const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -192,7 +134,6 @@ export function DataTableDemo() {
 		comments: "",
 	});
 	const [isEditing, setIsEditing] = React.useState(false);
-
 	const table = useReactTable({
 		data,
 		columns,
@@ -216,7 +157,6 @@ export function DataTableDemo() {
 			},
 		},
 	});
-
 	const handleAddNewEntry = () => {
 		setData((prevData) => [
 			{
@@ -247,20 +187,42 @@ export function DataTableDemo() {
 			reference: row.original.reference,
 			comments: row.original.comments,
 		});
+		setData((prev) => {
+			const newData = prev.map((obj) => {
+			  if (obj.id == row.original.id) {
+				return {
+				  ...obj,
+				  paidTo: row.original.paidTo,
+				  avatar: row.original.avatar,
+				  debit: row.original.debit.toString(),
+				  reference: row.original.reference,
+				  comments: row.original.comments,
+				};
+			  }
+			  return obj;
+			});
+			return newData;
+		  });
+		// setData((prev)=>{
+		// 	const newData = prev.map((obj)=>{
+		// 		if (obj.id == row.original.id) {
+		// 			obj.paidTo = row.original.paidTo,
+		// 			obj.avatar = row.original.avatar,
+		// 			obj.debit = row.original.debit.toString(),
+		// 			obj.reference = row.original.reference,
+		// 			obj.comments.row.original.comments
+		// 		}
+		// 	})
+		// 	return newData;
+		// })
 	};
 	const handleDelete = () => {
-		console.log(rowSelection);
 		const newData = data.filter((row, index) => {
 			if (!(rowSelection[index] == true)) {
 				return row;
 			}
 		});
-		console.log(newData);
 		setData(newData);
-		// setData((prevData) => {
-		// 	const newData = prevData.filter((row) => !rowSelection[row.id]);
-		// 	return newData;
-		// });
 		setRowSelection({});
 	};
 	const handleChangeEntry = () => {
@@ -369,7 +331,7 @@ export function DataTableDemo() {
 									{headerGroup.headers.map((header) => (
 										<TableHead
 											key={header.id}
-											className="ps-1"
+											className="ps-1 lg:text-center"
 										>
 											{header.isPlaceholder
 												? null
@@ -386,10 +348,24 @@ export function DataTableDemo() {
 						<TableBody>
 							<TableRow className="dark:border-white">
 								<TableCell></TableCell>
-								<TableCell>
-									<Input
+								<TableCell className="flex flex-col gap-1">	
+								{/* <AutoComplete form={form} name={'bank'} urlPath={'http://localhost:4000/payments/banks'} handleInputChange={handleInputChange}/> */}
+									<AutoCompleteInput className="dark:bg-[#5D7285] dark:text-white"
+										value={newEntry.paidTo || ""}
+										name="paidTo"
+										onChange={(e, suggestion) =>
+											setNewEntry((prev) => ({
+												...prev,
+												paidTo: e.target.value,
+											}))
+										}
+										hasChildren={false}
+										placeholder="Paid To"
+										urlpath='http://localhost:4000/payments/suppliers'/>
+									{/* <Input
 										className="dark:bg-[#5D7285] dark:text-white"
 										value={newEntry.paidTo}
+										name="paidTo"
 										onChange={(e) =>
 											setNewEntry((prev) => ({
 												...prev,
@@ -397,12 +373,13 @@ export function DataTableDemo() {
 											}))
 										}
 										placeholder="Paid To"
-									/>
+									/> */}
 								</TableCell>
 								<TableCell>
 									<Input
 										className="dark:bg-[#5D7285] dark:text-white"
 										type="number"
+										name="debit"
 										value={newEntry.debit}
 										onChange={(e) =>
 											setNewEntry((prev) => ({
@@ -417,6 +394,7 @@ export function DataTableDemo() {
 									<Input
 										className="dark:bg-[#5D7285] dark:text-white"
 										value={newEntry.reference}
+										name="reference"
 										onChange={(e) =>
 											setNewEntry((prev) => ({
 												...prev,
@@ -430,6 +408,7 @@ export function DataTableDemo() {
 									<Input
 										className="dark:bg-[#5D7285] dark:text-white"
 										value={newEntry.comments}
+										name="comments"
 										onChange={(e) =>
 											setNewEntry((prev) => ({
 												...prev,
@@ -469,9 +448,6 @@ export function DataTableDemo() {
 												<Edit className="h-4 w-4 text-foreground" />
 											</Button>
 										</TableCell>
-										{/* <Button className="absolute z-10 top-1 left-1 p-0 h-4 flex items-start" variant="ghost" onClick={()=>handleEdit(row)}>
-											<Edit className="h-4 w-4 text-foreground" />
-										</Button> */}
 									</TableRow>
 								))
 							) : (

@@ -1,0 +1,149 @@
+/*
+const initialData = [
+	{
+		id: "1",
+		paidTo: "Aarat Batra",
+		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
+		debit: 10000,
+		reference: "https://example.com/doc1",
+		comments: "Payment for services",
+	},
+	{
+		id: "2",
+		paidTo: "Jane Smith",
+		avatar: "/assets/mockPerson.jpeg",
+		debit: 5000,
+		reference: "https://example.com/doc2",
+		comments: "Reimbursement",
+	},
+	{
+		id: "3",
+		paidTo: "Jill",
+		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
+		debit: 7000,
+		reference: "https://example.com/doc1",
+		comments: "Car",
+	},
+	{
+		id: "4",
+		paidTo: "Joe Smith",
+		avatar: "/assets/mockPerson.jpeg",
+		debit: 9000,
+		reference: "https://example.com/doc2",
+		comments: "Cycle",
+	},
+	{
+		id: "5",
+		paidTo: "Manjit",
+		avatar: "https://firebasestorage.googleapis.com/v0/b/collabtank-7bd46.appspot.com/o/user_avatars%2Favatar_Aarat_1719956459440?alt=media&token=dc8714b3-e21a-4b3d-9a83-1aabaaca00b3.jpg",
+		debit: 2000,
+		reference: "https://example.com/doc1",
+		comments: "new",
+	},
+	{
+		id: "6",
+		paidTo: "J",
+		avatar: "/assets/mockPerson.jpeg",
+		debit: 16000,
+		reference: "https://example.com/doc2",
+		comments: "gears",
+	},
+	// More initial data here...
+];
+
+const demoCols = [
+  {
+      name: 'paidTo',
+      displayName: 'paid to',
+      type: 'text' // 'number', 'cash','text', 'link' default is 'text'
+  },
+  {
+      name: 'debit',
+      displayName: 'debit',
+      type: 'cash'
+  },
+  {
+      name: 'reference',
+      displayName: 'reference',
+      link: 'url',
+      type: 'link'
+  },
+  {
+      name: 'comments',
+      displayName: 'comments',
+      type: 'comment'
+  }
+];
+
+const tableConfig = {
+  avatarColumns: ['paidTo'], // columns where you want to show an avatar
+  sortableColumns: ['paidTo', 'debit'], // columns where you want to enable sorting
+  rowLimit: 5, // how many rows per page
+  showSelect: true, // make the table show a selectable checkbox or not for each row
+};
+*/
+const initialData = [
+  {
+    id: '1',
+    groupCode: 1200,
+    group: 'abc',
+    Type: 'suppliers',
+    accountCode: 1100,
+    accountDescription: 'this is long description of the account code',
+    subledgerFlag: 'true'
+  },
+  {
+    id: '2',
+    groupCode: 1400,
+    group: 'def',
+    Type: 'employees',
+    accountCode: 1300,
+    accountDescription: 'this is second long description of the account code',
+    subledgerFlag: 'false'
+  },
+  {
+    id: '3',
+    groupCode: 1600,
+    group: 'ghi',
+    Type: 'bankers',
+    accountCode: 1500,
+    accountDescription: 'this is third long description of the account code',
+    subledgerFlag: 'true'
+  },
+  {
+    id: '4',
+    groupCode: 1800,
+    group: 'jkl',
+    Type: 'investors',
+    accountCode: 1700,
+    accountDescription: 'this is fourth long description of the account code',
+    subledgerFlag: 'true'
+  },
+  {
+    id: '5',
+    groupCode: 2000,
+    group: 'mno',
+    Type: 'stakeholders',
+    accountCode: 1900,
+    accountDescription: 'this is fifth long description of the account code',
+    subledgerFlag: 'false'
+  },
+  {
+    id: '6',
+    groupCode: 2200,
+    group: 'pqr',
+    Type: 'friends',
+    accountCode: 2100,
+    accountDescription: 'this is sixth long description of the account code',
+    subledgerFlag: 'false'
+  },
+  {
+    id: '7',
+    groupCode: 2400,
+    group: 'stu',
+    Type: 'workers',
+    accountCode: 2300,
+    accountDescription: 'this is seventh long description of the account code',
+    subledgerFlag: 'true'
+  }
+];

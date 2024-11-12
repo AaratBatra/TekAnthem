@@ -2,9 +2,17 @@ import Details from "@/components/Details";
 import Payments from "@/components/Payments";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-
-
+import { useRef } from "react";
 const Payment = () => {
+	const paymentsRef = useRef(null);
+	const handleSave = () => {
+		if (paymentsRef.current) {
+			const isValid = paymentsRef.current.handleSave();
+			return isValid;
+		} else {
+			console.error("cannot get ref")
+		}
+	};
 	return (
 		<main className="flex flex-1 flex-col gap-4 p-4 max-md:p-1 lg:gap-6 lg:p-6">
 			<form>
@@ -17,8 +25,8 @@ const Payment = () => {
 					/>
 				</div>
 			</form>
-			<Payments />
-			<Details />
+			<Payments ref={paymentsRef} />
+			<Details handleSave={handleSave} />
 		</main>
 	);
 };

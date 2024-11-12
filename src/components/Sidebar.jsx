@@ -1,6 +1,8 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useTheme } from "./themeprovider.jsx";
 import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { performLogout } from "@/store/slices/AuthSlice.js";
 //ui imports
 import {
 	Bell,
@@ -25,13 +27,18 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "./ui/switch";
 import NavMobActiveContents from "./NavMobActiveContents";
+import { cn } from "@/lib/utils.js";
 
-const Sidebar = () => {
+
+const Sidebar = ({expanded, setExpanded}) => {
 	const { theme, setTheme } = useTheme();
 	const [toggleLedger, setToggleLedger] = useState(false);
 	const [togglePayables, setTogglePayables] = useState(false);
 	const [toggleReceivables, setToggleReceivables] = useState(false);
 	const [toggleInventory, setToggleInventory] = useState(false);
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const linkData = {
 		Dashboard: [],
 		Payables: ["Supplier", "Payment", "Invoice"],
@@ -48,14 +55,19 @@ const Sidebar = () => {
 	}
 
 	return (
-		<div className="hidden border-r h-full bg-muted/40 md:block">
-			<div className="flex h-full max-h-screen flex-col gap-2 md:fixed md:top-0 md:left-0 lg:w-[280px]">
-				<div className="flex py-4 items-center border-b px-4 lg:px-6">
+		<div className="hidden border-r h-full bg-white dark:bg-muted/40 shadow-md rounded-2xl md:block">
+			{/* <div className="flex h-full lg:max-h-screen flex-col gap-2  md:w-[245px] lg:w-[60px] relative lg:fixed lg:left-0"> */}
+			<div className={cn(
+				"flex h-full lg:max-h-screen flex-col gap-2 relative lg:fixed lg:left-0",
+				expanded ? "md:w-[245px] lg:w-[280px]" : "md:w-[60px] lg:w-[60px]"
+			)}>
+				<div className="flex py-4 items-center border-b px-4 lg:px-6 overflow-hidden">
 					<Link
 						to="/"
 						className="flex items-center gap-2 font-semibold"
 					>
-						<Package2 className="h-6 w-6" />
+						<img src="/assets/ta-logo.png" className="block h-6 w-6" />
+						{/* <Package2 className="h-6 w-6" /> */}
 						<span>TekAnthem</span>
 					</Link>
 					<Button
@@ -71,19 +83,56 @@ const Sidebar = () => {
 					<nav className="grid items-start px-2 text-sm font-medium lg:px-4">
 						<NavLink
 							to="/dashboard"
-							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className={({ isActive }) =>
+								isActive
+									? "flex items-center relative gap-3 bg-green-200 text-[#2b9731] rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									: "flex items-center relative gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group active:text-[#2b9731] active:bg-green-200"
+							}
 						>
-							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-								<LayoutDashboard className="h-5 w-5" />
-							</div>
-							Dashboard
+							{({ isActive }) => (
+								<>
+									<div
+										className={
+											isActive
+												? "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] text-green-200 bg-[#2b9731]"
+												: "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] bg-white text-black group-active:text-green-200 group-active:bg-[#2b9731]"
+										}
+									>
+										<LayoutDashboard className="h-5 w-5" />
+									</div>
+									Dashboard
+								</>
+							)}
 						</NavLink>
 						<NavLink
 							to="/payables"
-							className="flex relative items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className={({ isActive }) =>
+								isActive
+									? "flex items-center relative gap-3 bg-green-200 text-[#2b9731] rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									: "flex items-center relative gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group active:text-[#2b9731] active:bg-green-200"
+							}
 							onClick={() => setTogglePayables(!togglePayables)}
 						>
-							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+							{({ isActive }) => (
+								<>
+									<div
+										className={
+											isActive
+												? "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] text-green-200 bg-[#2b9731]"
+												: "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] bg-white text-black group-active:text-green-200 group-active:bg-[#2b9731]"
+										}
+									>
+										<ShoppingCart className="h-5 w-5" />
+									</div>
+									Payables
+									{togglePayables ? (
+										<ChevronDown className="absolute right-4" />
+									) : (
+										<ChevronRight className="absolute right-4" />
+									)}
+								</>
+							)}
+							{/* <div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 								<ShoppingCart className="h-5 w-5" />
 							</div>
 							Payables{" "}
@@ -91,7 +140,7 @@ const Sidebar = () => {
 								<ChevronDown className="absolute right-4" />
 							) : (
 								<ChevronRight className="absolute right-4" />
-							)}
+							)} */}
 						</NavLink>
 						{togglePayables ? (
 							<NavMobActiveContents
@@ -103,19 +152,33 @@ const Sidebar = () => {
 						)}
 						<NavLink
 							to="/receivables"
-							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className={({ isActive }) =>
+								isActive
+									? "flex items-center relative gap-3 bg-green-200 text-[#2b9731] rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									: "flex items-center relative gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group active:text-[#2b9731] active:bg-green-200"
+							}
 							onClick={() =>
 								setToggleReceivables(!toggleReceivables)
 							}
 						>
-							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-								<Package className="h-5 w-5" />
-							</div>
-							Receivables{" "}
-							{toggleReceivables ? (
-								<ChevronDown className="absolute right-4" />
-							) : (
-								<ChevronRight className="absolute right-4" />
+							{({ isActive }) => (
+								<>
+									<div
+										className={
+											isActive
+												? "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] text-green-200 bg-[#2b9731]"
+												: "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] bg-white text-black group-active:text-green-200 group-active:bg-[#2b9731]"
+										}
+									>
+										<Package className="h-5 w-5" />
+									</div>
+									Receivables
+									{toggleReceivables ? (
+										<ChevronDown className="absolute right-4" />
+									) : (
+										<ChevronRight className="absolute right-4" />
+									)}
+								</>
 							)}
 						</NavLink>
 						{toggleReceivables ? (
@@ -128,10 +191,34 @@ const Sidebar = () => {
 						)}
 						<NavLink
 							to="/ledger"
-							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className={({ isActive }) =>
+								isActive
+									? "flex items-center relative gap-3 bg-green-200 text-[#2b9731] rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									: "flex items-center relative gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group active:text-[#2b9731] active:bg-green-200"
+							}
 							onClick={() => setToggleLedger(!toggleLedger)}
 						>
-							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
+							{({ isActive }) => (
+								<>
+									<div
+										className={
+											isActive
+												? "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] text-green-200 bg-[#2b9731]"
+												: "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] bg-white text-black group-active:text-green-200 group-active:bg-[#2b9731]"
+										}
+									>
+										<Table2 className="h-5 w-5" />
+									</div>
+									Ledger
+									{toggleLedger ? (
+										<ChevronDown className="absolute right-4" />
+									) : (
+										<ChevronRight className="absolute right-4" />
+									)}
+								</>
+							)}
+
+							{/* <div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
 								<Table2 className="h-5 w-5" />
 							</div>
 							Ledger{" "}
@@ -139,7 +226,7 @@ const Sidebar = () => {
 								<ChevronDown className="absolute right-4" />
 							) : (
 								<ChevronRight className="absolute right-4" />
-							)}
+							)} */}
 						</NavLink>
 						{toggleLedger ? (
 							<NavMobActiveContents
@@ -151,17 +238,31 @@ const Sidebar = () => {
 						)}
 						<NavLink
 							to="/inventory"
-							className="flex items-center relative gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+							className={({ isActive }) =>
+								isActive
+									? "flex items-center relative gap-3 bg-green-200 text-[#2b9731] rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group"
+									: "flex items-center relative gap-3 text-muted-foreground rounded-lg px-3 py-2 transition-all hover:text-[#0C7FDA] hover:bg-[#E9F5FE] group active:text-[#2b9731] active:bg-green-200"
+							}
 							onClick={() => setToggleInventory(!toggleInventory)}
 						>
-							<div className="flex justify-center items-center h-8 w-8 rounded-md bg-white text-black group-hover:text-white group-hover:bg-[#0C7FDA]">
-								<Home className="h-5 w-5" />
-							</div>
-							Inventory{" "}
-							{toggleInventory ? (
-								<ChevronDown className="absolute right-4" />
-							) : (
-								<ChevronRight className="absolute right-4" />
+							{({ isActive }) => (
+								<>
+									<div
+										className={
+											isActive
+												? "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] text-green-200 bg-[#2b9731]"
+												: "flex justify-center items-center h-8 w-8 rounded-md group-hover:text-white group-hover:bg-[#0C7FDA] bg-white text-black group-active:text-green-200 group-active:bg-[#2b9731]"
+										}
+									>
+										<Home className="h-5 w-5" />
+									</div>
+									Inventory{" "}
+									{toggleInventory ? (
+										<ChevronDown className="absolute right-4" />
+									) : (
+										<ChevronRight className="absolute right-4" />
+									)}
+								</>
 							)}
 						</NavLink>
 						{toggleInventory ? (
@@ -174,8 +275,7 @@ const Sidebar = () => {
 						)}
 					</nav>
 				</ScrollArea>
-
-				<div className="mt-auto p-1">
+				<div className={cn("mt-auto p-1 relative bottom-0 md:w-[240px] lg:w-auto", expanded ? "block" : "hidden")}>
 					<Card x-chunk="dashboard-02-chunk-0">
 						<CardHeader className="p-1 pt-0 pb-1">
 							<CardTitle className="hidden"></CardTitle>
@@ -226,6 +326,12 @@ const Sidebar = () => {
 							<Button
 								size="sm"
 								className="w-full py-6 flex justify-between items-center dark:text-white hover:bg-slate-600"
+								onClick={()=>{
+									dispatch(performLogout());
+									navigate('/login', {
+										replace: true
+									})
+								}}
 							>
 								<svg
 									width="35"

@@ -28,7 +28,8 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light"
-
+      localStorage.setItem(storageKey, systemTheme);
+      setTheme(systemTheme)
       root.classList.add(systemTheme)
       return
     }

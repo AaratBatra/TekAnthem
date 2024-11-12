@@ -7,7 +7,6 @@ import { Dashboard } from "./pages/Dashboard/Dashboard.jsx";
 import App from "./App.jsx";
 import Landing from "./pages/Landing.jsx";
 import Payment from "./pages/Ledger/Payment.jsx";
-import { Toaster } from "./components/ui/toaster.jsx";
 import ErrorPage from "./pages/ErrorPage";
 import Payables from "./pages/Payables/Payables";
 import Supplier from "./pages/Payables/Supplier";
@@ -24,11 +23,22 @@ import Journal from "./pages/Ledger/Journal";
 import Contra from "./pages/Ledger/Contra";
 import Inventory from "./pages/Inventory/Inventory";
 import Item from "./pages/Inventory/Item";
-
+import { store } from "@/store/store";
+import { Provider } from "react-redux";
+import { LoginForm } from "./pages/Auth/Login";
+import RequireAuth from "./components/RequireAuth";
+import RedirectIfAuth from "./components/RedirectIfAuth";
+import { Example } from "./pages/Example";
+// import AddCustomerForm from "./components/payables/AddCustomerForm";
+// import VandorAddEditForm from "./components/payables/VandorAddEditForm";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: (
+			// <RequireAuth>
+				<App />
+			// </RequireAuth>
+		),
 		errorElement: <ErrorPage />,
 		children: [
 			{
@@ -57,6 +67,14 @@ const router = createBrowserRouter([
 				path: "/receivables",
 				element: <Receivables />,
 				children: [
+					// {
+					// 	path: "/receivables/vendorForm",
+					// 	element: <VandorAddEditForm />,
+					// },
+					// {
+					// 	path: "/receivables/customerForm",
+					// 	element: <AddCustomerForm />,
+					// },
 					{
 						path: "/receivables/customer",
 						element: <Customer />,
@@ -109,12 +127,25 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	{
+		path: "/login",
+		element: (
+			<RedirectIfAuth>
+				<LoginForm />
+			</RedirectIfAuth>
+		),
+	},
+	{
+		path: "/example",
+		element: <Example />
+	}
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-		<RouterProvider router={router}>
-			<App />
-			<Toaster />
-		</RouterProvider>
-	</ThemeProvider>
+	<Provider store={store}>
+		<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+			<RouterProvider router={router}>
+				<App />
+			</RouterProvider>
+		</ThemeProvider>
+	</Provider>
 );
